@@ -2,8 +2,8 @@ const $ = new Env('Follow每日签到')
 $.desc = []
 
 // 直接在脚本中定义 token 和 cookie
-const csrfToken = "87ca8f3c7c2cff065ac7db043cf9599af4e29fd16f4a1e495e129f8c9291df6d%7Ce2e160f5892b030707bf2770de8af5379916e721dcb0e1d2e5908be532e3cfa9";
-const cookie = "authjs.session-token=3084d571-daa3-4d71-93df-82c0279eb299";
+const csrfToken = "964b2d9dc48f8d1d4a388893e894bb5cb9e9ddae7da07ba208b7633d0b28e216%7C4a2ea9c4b3c5585017dd5aeb62bae737246da2959e58a68958ed382d45c33dce";
+const cookie = "authjs.session-token=9115fadb-0b84-4057-a807-67fa23d3eeb4";
 
 !(async () => {
   await sign()
