@@ -1,19 +1,16 @@
 #!name=YouTube tvOS
-#!desc=Apple TV / tvOS YouTube 稳定优先版：仅处理 youtubei API，不 MITM googlevideo 视频 CDN，避免证书固定导致播放失败
+#!desc=Apple TV / tvOS YouTube 稳定优先版：仅 MITM youtubei API，避开 googlevideo 与 youtube.com 证书固定
 #!author=silentoy / response script based on gholts YouTube Enhance
 #!date=2026-09-16
 #!arguments=block_upload:true,block_shorts:false,block_games:true,block_vertical_live:false
-#!arguments-desc=Apple TV 稳定优先：不 MITM *.googlevideo.com，因此不会执行 initplayback/videoplayback 脚本。
+#!arguments-desc=Apple TV 稳定优先：仅 MITM youtubei.googleapis.com；不 MITM *.googlevideo.com 和 *.youtube.com，避免 certificate pinning。
 
 [Rule]
+# 强制 youtubei API 从 QUIC/HTTP3 回落到可 MITM 的 TCP/TLS
 AND,((DOMAIN,youtubei.googleapis.com),(PROTOCOL,UDP)),REJECT
 
 [Script]
 youtube.response = type=http-response,pattern=^https:\/\/youtubei\.googleapis\.com\/youtubei\/v1\/(?:navigation\/resolve_url|browse|next|player|search|reel\/reel_watch_sequence|guide|account\/get_setting|get_watch|log_event|config)(?:\?.*)?$,requires-body=1,max-size=-1,binary-body-mode=1,script-path=https://raw.githubusercontent.com/gholts/surge/main/scripts/youtube/response.js,argument="{\"blockUpload\":{{{block_upload}}},\"blockShorts\":{{{block_shorts}}},\"blockGames\":{{{block_games}}},\"blockVerticalLive\":{{{block_vertical_live}}}}"
 
-[URL Rewrite]
-^https:\/\/www\.youtube\.com\/(pagead|pcs)\/ - reject
-^https:\/\/s\.youtube\.com\/api\/stats\/ads - reject
-
 [MITM]
-hostname = %APPEND% youtubei.googleapis.com, *.youtube.com
+hostname = %APPEND% youtubei.googleapis.com
