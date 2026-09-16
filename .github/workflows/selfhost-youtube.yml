@@ -1,0 +1,29 @@
+name: Self-host YouTube Enhance
+
+on:
+  push:
+    paths:
+      - '.github/workflows/selfhost-youtube.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch upstream scripts and rewrite module
+        run: |
+          mkdir -p scripts/youtube
+          curl -fL https://raw.githubusercontent.com/gholts/surge/main/scripts/youtube/request.js -o scripts/youtube/request.js
+          curl -fL https://raw.githubusercontent.com/gholts/surge/main/scripts/youtube/response.js -o scripts/youtube/response.js
+          sed -i 's#https://raw.githubusercontent.com/gholts/surge/main/scripts/youtube/#https://raw.githubusercontent.com/silentoy/surge/main/scripts/youtube/#g' modules/youtube-enhance.sgmodule
+      - name: Commit changes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add scripts/youtube/request.js scripts/youtube/response.js modules/youtube-enhance.sgmodule
+          git diff --cached --quiet && exit 0
+          git commit -m 'Self-host YouTube Enhance scripts'
+          git push
