@@ -26,6 +26,15 @@ DOMAIN-SUFFIX, openai.com
 DOMAIN-SUFFIX, sora.com
 
 # Apple Intelligence
+# PCC 盲签名与中继鉴权。漏掉后图乐园握手中断
+DOMAIN-SUFFIX,issuer.apple.com
+DOMAIN,ropes.apple.com
+DOMAIN,mask.icloud.com
+DOMAIN,mask-h2.icloud.com
+DOMAIN,mask-api.icloud.com
+# Siri 生产接口与搜索。不写会被后面的 Apple/FINAL 规则直连
+DOMAIN-SUFFIX,smoot.apple.com
+DOMAIN-SUFFIX,api-siri-prod.apple.com
 DOMAIN-SUFFIX,apple-relay.apple.com
 DOMAIN-SUFFIX,apple-relay.fastly-edge.com
 DOMAIN-SUFFIX,apple-relay.cloudflare.com
